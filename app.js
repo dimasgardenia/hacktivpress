@@ -12,10 +12,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 const articles = require('./routers/articlesRoute')
-const users = require('./routers/userRoute')
+const users = require('./routers/usersRoute')
 
 app.use('/api', articles)
-
 app.use('/', users)
 
 app.listen(3000)

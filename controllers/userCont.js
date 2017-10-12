@@ -1,6 +1,6 @@
-const Usersdb = require('../controllers/UserCont')
+const Usersdb = require('../models/users')
 
 
 module.exports = {
-  
+
 }
