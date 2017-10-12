@@ -4,15 +4,18 @@ const salt = bcrypt.genSaltSync(10)
 const hash = bcrypt.hashSync("B4c0/\/", salt)
 require('dotenv').config()
 
-let nowlogin = (req,res,next) => {
-  jwt.verify(req.headers.token, process.env.KEY, function (err, decoded) {
-    if (!err) {
+let haslogin = (req,res,next)=>{
+  console.log('masuk has login')
+  jwt.verify(req.headers.token, process.env.KEY,function(err,decoded){
+    if(err){
+      res.send("you must login first")
+    }else{
       req._id = decoded._id
       next()
-    } else {
-      res.send(err)
     }
   })
 }
 
-module.exports = nowlogin
+module.exports = {
+  haslogin
+}

@@ -12,7 +12,9 @@ List Of Basics Routes :
 List Of Articles Routes :
 
             Routes            |             HTTP                      |           Descriptions
-          /api/articles                     GET                                  GET All Articles
+          /api                              GET                                  GET All Articles
+          /api/articles/{category}          GET                          GET Articles by Category
+          /api/articles                     GET                        GET All Articles by Author
           /api/articles                     POST                                POST All Articles
           /api/articles/:id                 PUT                                   PUT Articles
           /api/articles/:id                 Delete                                DELETE Articles

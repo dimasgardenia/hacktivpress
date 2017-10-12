@@ -1,7 +1,22 @@
 const Articlesdb = require('../models/articles')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+const salt = bcrypt.genSaltSync(10)
+const hash = bcrypt.hashSync("B4c0/\/", salt)
+require('dotenv').config()
 
-let viewArticle = (req, res) => {
-  Articlesdb.find({}, function (err, result) {
+let viewAllArticle = (req, res) => {
+  Articlesdb.find({}, function(err, result) {
+    if (!err) {
+      res.send(result)
+    } else {
+      res.send()
+    }
+  })
+}
+
+let viewBycategory = (req, res) => {
+  Articlesdb.find({category: req.params.category}, function (err, result) {
     if (!err) {
       res.send(result)
     } else {
@@ -10,11 +25,27 @@ let viewArticle = (req, res) => {
   })
 }
 
+
+let viewArticle = (req, res) => {
+  Articlesdb.find({author: req._id})
+  .populate('author').
+  exec(function (err, result) {
+    if (!err) {
+      res.send(result)
+    } else {
+      res.send(err)
+    }
+  })
+}
+
+
 let postArticle = (req, res) => {
+  let tokvery = jwt.verify(req.headers.token, process.env.KEY)
   Articlesdb.create({
     title: req.body.title,
     content: req.body.content,
-    category: req.body.category
+    category: req.body.category,
+    author: tokvery
   }, function (err, result) {
     if (!err) {
       res.send(result)
@@ -26,7 +57,8 @@ let postArticle = (req, res) => {
 
 let editArticle = (req, res) => {
   Articlesdb.update({
-    id: req.params._id
+    id: req.params._id,
+    author: req._id
   },{
     title: req.body.title,
     content: req.body.content,
@@ -53,6 +85,8 @@ let deleteArticle = (req, res) => {
 }
 
 module.exports = {
+  viewAllArticle,
+  viewBycategory,
   viewArticle,
   postArticle,
   editArticle,
